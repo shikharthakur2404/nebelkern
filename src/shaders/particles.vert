@@ -40,6 +40,11 @@ void main() {
   float radial = length(aBasePos.xy);
   displaced   += normalize(vec3(aBasePos.xy, 0.0)) * radial * uDispersion * 0.05;
 
+  // ── Step 3b: Sub-pixel micro-jitter (eliminates moiré/aliasing artifacts) ──
+  float jitterSeed = aLuminance * 100.0 + uTime * 60.0;
+  vec2 jitter = vec2(sin(jitterSeed * 12.9898), cos(jitterSeed * 78.233)) * 0.0015;
+  displaced.xy += jitter;
+
   // ── Step 4: Pass data to fragment shader ──
   vLuminance    = aLuminance;
   vDistToCenter = length(displaced);

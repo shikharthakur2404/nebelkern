@@ -22,12 +22,14 @@ import { BlendFunction, ToneMappingMode } from 'postprocessing'
 import { Vector2 }         from 'three'
 import ParticleSystem      from './ParticleSystem'
 import { type Palette }    from '../config/palettes'
+import { Trail }           from '../effects/TrailEffect'
 
 interface Props {
   particleCount: number
   dispersion:    number
   noiseScale:    number
   noiseSpeed:    number
+  trailDamp:     number
   palette:       Palette
 }
 
@@ -58,6 +60,12 @@ export default function Scene(props: Props) {
 
       {/* ── Postprocessing pipeline ── */}
       <EffectComposer>
+
+        {/*
+          Velocity Trails / Persistence — fades previous frames over time,
+          giving moving particles glowing motion streamers through the curl field.
+        */}
+        <Trail damp={props.trailDamp} />
 
         {/*
           Bloom — creates the volumetric light bleed around particle clusters.

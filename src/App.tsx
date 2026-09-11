@@ -23,6 +23,7 @@ export default function App() {
     dispersion,
     noiseScale,
     noiseSpeed,
+    trailDamp,
   } = useControls('✦ nebelkern', {
 
     // Palette picker — dropdown of all palette names
@@ -56,6 +57,14 @@ export default function App() {
         max:   3.0,
         step:  0.05,
       },
+      trailDamp: {
+        label: 'Velocity Trails',
+        value: 0.88,
+        min:   0.0,
+        max:   0.98,
+        step:  0.01,
+        hint:  'Persistence trail damping — higher = longer motion streamers',
+      },
     }),
 
     // ── Rendering folder ────────────────────────────────────────────────────
@@ -72,7 +81,7 @@ export default function App() {
     // ── Preset save/load ────────────────────────────────────────────────────
     'Presets': folder({
       'Save Preset': button(() => {
-        const preset = { paletteKey, particleCount, dispersion, noiseScale, noiseSpeed }
+        const preset = { paletteKey, particleCount, dispersion, noiseScale, noiseSpeed, trailDamp }
         const blob   = new Blob([JSON.stringify(preset, null, 2)], { type: 'application/json' })
         const url    = URL.createObjectURL(blob)
         const a      = document.createElement('a')
@@ -94,6 +103,7 @@ export default function App() {
         dispersion={dispersion}
         noiseScale={noiseScale}
         noiseSpeed={noiseSpeed}
+        trailDamp={trailDamp}
         palette={palette}
       />
     </div>
